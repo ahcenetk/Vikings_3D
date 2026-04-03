@@ -1,0 +1,13 @@
+/* Supprime les marges par défaut du navigateur */
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Empêche le scroll */
+    background-color: #111; /* Fond sombre en attendant le chargement */
+}
+
+#three-canvas {
+    display: block;
+    width: 100vw;
+    height: 100vh;
+}
