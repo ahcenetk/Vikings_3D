@@ -1,6 +1,9 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import GUI from 'lil-gui';
+
+const gui = new GUI();
 
 // 1. SCÈNE ET CAMÉRA
 const scene = new THREE.Scene();
@@ -70,4 +73,19 @@ function animate() {
     renderer.render(scene, camera);
 }
 
+
+const helmetGroup = new THREE.Group();
+scene.add(helmetGroup);
+
+loader.load('public/viking_maiden_shield.glb',
+    (gltf) => {
+        const model = gltf.scene;
+        console.log(model);
+        helmetGroup.add(model);
+    }
+);
+
+gui.add(helmetGroup.position, 'x', -10, 10).name('Position X');
+gui.add(helmetGroup.position, 'y', -10, 10).name('Position Y');
+gui.add(helmetGroup.position, 'z', -10, 10).name('Position Z');
 animate();
