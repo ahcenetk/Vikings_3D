@@ -2,12 +2,16 @@ import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import GUI from 'lil-gui';
+import gsap from 'gsap'; 
+
 
 const gui = new GUI();
 
 // 1. SCÈNE ET CAMÉRA
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x0a0a0a); // Fond sombre ambiance Viking
+const textureLoader = new THREE.TextureLoader();
+const backgroundTexture = textureLoader.load('BackGround/Arriere_plan.png');
+scene.background = backgroundTexture; // Fond sombre ambiance Viking
 
 // On place la caméra assez loin car le modèle est grand
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -32,6 +36,8 @@ scene.add(directionalLight);
 // 4. CONTRÔLES SOURIS (Pour tourner autour de la salle)
 const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
+controls.maxDistance = 30;
+
 
 // 5. CHARGEMENT DU MODÈLE (.glb)
 const loader = new GLTFLoader();
@@ -74,18 +80,37 @@ function animate() {
 }
 
 
-const helmetGroup = new THREE.Group();
-scene.add(helmetGroup);
+const shieldGroup = new THREE.Group();
+scene.add(shieldGroup);
 
 loader.load('public/viking_maiden_shield.glb',
     (gltf) => {
         const model = gltf.scene;
         console.log(model);
-        helmetGroup.add(model);
+        shieldGroup.add(model);
     }
 );
 
-gui.add(helmetGroup.position, 'x', -10, 10).name('Position X');
-gui.add(helmetGroup.position, 'y', -10, 10).name('Position Y');
-gui.add(helmetGroup.position, 'z', -10, 10).name('Position Z');
+gui.add(shieldGroup.position, 'x', -10, 10).name('Position X');
+gui.add(shieldGroup.position, 'y', -10, 10).name('Position Y');
+gui.add(shieldGroup.position, 'z', -10, 10).name('Position Z');
+animate();
+
+
+const thorGroup = new THREE.Group();
+scene.add(thorGroup);;
+
+loader.load('public/marvel_thors_hammer_mjolnir.glb',
+    (gltf) => {
+        const model = gltf.scene;
+
+        model.scale.set(3, 3, 3); // Agrandir le marteau pour qu'il soit visible dans la salle
+        console.log(model);
+        thorGroup.add(model);
+    }
+);
+
+gui.add(thorGroup.position, 'x', -20, 10).name('Position X');
+gui.add(thorGroup.position, 'y', -15, 10).name('Position Y');
+gui.add(thorGroup.position, 'z', -15, 10).name('Position Z');
 animate();
