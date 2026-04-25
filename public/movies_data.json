@@ -1,0 +1,95 @@
+[
+    {
+        "id": "vikings",
+        "title": "Vikings",
+        "accepted_answers": [
+            "vikings",
+            "viking"
+        ],
+        "release_year": 2013,
+        "type": "TV Show",
+        "difficulty": "facile",
+        "funFact": "Les exploits d'un groupe de vikings de la fin du 8ème siècle jusqu'au milieu du 11ème, mené par Ragnar Lodbrok, l'un des plus populaires héros viking ...",
+        "model3D_ref": "hache_ragnar"
+    },
+    {
+        "id": "vikings_valhalla",
+        "title": "Vikings : Valhalla",
+        "accepted_answers": [
+            "vikings valhalla",
+            "valhalla"
+        ],
+        "release_year": 2022,
+        "type": "TV Show",
+        "difficulty": "moyen",
+        "funFact": "100 ans après les premiers vikings, l'histoire de leurs descendants, parmi lesquels les légendaires Leif Erikson, Freydis, Harald Harada et William Le...",
+        "model3D_ref": "bouclier"
+    },
+    {
+        "id": "the_last_kingdom",
+        "title": "The Last Kingdom",
+        "accepted_answers": [
+            "the last kingdom",
+            "last kingdom"
+        ],
+        "release_year": 2015,
+        "type": "TV Show",
+        "difficulty": "facile",
+        "funFact": "En Angleterre, au IXème siècle, Uhtred, le fils d'un noble, kidnappé par les Vikings lorsqu'il était enfant, doit choisir entre son pays natal et le p...",
+        "model3D_ref": "epee_uhtred"
+    },
+    {
+        "id": "the_northman",
+        "title": "The Northman",
+        "accepted_answers": [
+            "the northman",
+            "northman"
+        ],
+        "release_year": 2022,
+        "type": "Movie",
+        "difficulty": "moyen",
+        "funFact": "En Islande, le jeune prince Amleth vient tout juste de devenir un homme quand son père est brutalement assassiné par son oncle qui s'empare alors de l...",
+        "model3D_ref": "corne"
+    },
+    {
+        "id": "how_to_train_your_dragon",
+        "title": "Dragons",
+        "accepted_answers": [
+            "how to train your dragon",
+            "dragons",
+            "krokmou"
+        ],
+        "release_year": 2025,
+        "type": "Movie",
+        "difficulty": "facile",
+        "funFact": "Sur l'île accidentée de Berk, où Vikings et dragons se vouent une haine viscérale depuis des générations, Harold fait figure d'exception. Fils inventi...",
+        "model3D_ref": "dragon"
+    },
+    {
+        "id": "thor",
+        "title": "Thor",
+        "accepted_answers": [
+            "thor",
+            "marvel thor"
+        ],
+        "release_year": 2011,
+        "type": "Movie",
+        "difficulty": "facile",
+        "funFact": "Thor, le héros du nouveau film issu de l'univers Marvel, est un guerrier tout-puissant et arrogant dont les actes téméraires font renaître de nos jour...",
+        "model3D_ref": "mjolnir"
+    },
+    {
+        "id": "the_13th_warrior",
+        "title": "Le 13ème Guerrier",
+        "accepted_answers": [
+            "the 13th warrior",
+            "le 13eme guerrier",
+            "le treizieme guerrier"
+        ],
+        "release_year": 1999,
+        "type": "Movie",
+        "difficulty": "difficile",
+        "funFact": "Contraint à l'exil par son calife, pour avoir séduit la femme d'un autre, Ahmed Ibn Fahdlan est envoyé comme ambassadeur en Asie mineure. Une prophéti...",
+        "model3D_ref": "armure"
+    }
+]
