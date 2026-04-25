@@ -103,7 +103,7 @@ loader.load('/marvel_thors_hammer_mjolnir.glb',
     (gltf) => {
         const model = gltf.scene;
 
-        model.scale.set(3, 3, 3); // Agrandir le marteau pour qu'il soit visible dans la salle
+        model.scale.set(2, 2, 2); // Agrandir le marteau pour qu'il soit visible dans la salle
         console.log(model);
         thorGroup.add(model);
     }
@@ -113,3 +113,23 @@ gui.add(thorGroup.position, 'x', -20, 10).name('Position X');
 gui.add(thorGroup.position, 'y', -15, 10).name('Position Y');
 gui.add(thorGroup.position, 'z', -15, 10).name('Position Z');
 animate();
+
+
+const uhtredGroup = new THREE.Group();
+scene.add(uhtredGroup);
+
+loader.load('/Epee_uhtred.glb',
+    (gltf) => {
+        const model = gltf.scene;
+        uhtredGroup.position.set(3.25, -3, 2.8);
+
+        model.scale.set(0.3, 0.3, 0.3); // retrecir le modèle pour qu'il soit visible dans la salle
+        console.log(model);
+        uhtredGroup.add(model);
+    }
+);
+
+gui.add(uhtredGroup.position, 'x', -30, 10).name('Position X');
+gui.add(uhtredGroup.position, 'y', -20, 10).name('Position Y');
+gui.add(uhtredGroup.position, 'z', -20, 10).name('Position Z');
+animate()
