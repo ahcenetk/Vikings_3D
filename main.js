@@ -10,7 +10,7 @@ const gui = new GUI();
 // 1. SCÈNE ET CAMÉRA
 const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
-const backgroundTexture = textureLoader.load('BackGround/Arriere_plan.png');
+const backgroundTexture = textureLoader.load('/Arriere_plan.png');
 scene.background = backgroundTexture; // Fond sombre ambiance Viking
 
 // On place la caméra assez loin car le modèle est grand
@@ -82,8 +82,7 @@ function animate() {
 
 const shieldGroup = new THREE.Group();
 scene.add(shieldGroup);
-
-loader.load('public/viking_maiden_shield.glb',
+loader.load('/viking_maiden_shield.glb',
     (gltf) => {
         const model = gltf.scene;
         console.log(model);
@@ -100,7 +99,7 @@ animate();
 const thorGroup = new THREE.Group();
 scene.add(thorGroup);;
 
-loader.load('public/marvel_thors_hammer_mjolnir.glb',
+loader.load('/marvel_thors_hammer_mjolnir.glb',
     (gltf) => {
         const model = gltf.scene;
 
