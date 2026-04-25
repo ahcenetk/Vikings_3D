@@ -123,13 +123,31 @@ loader.load('/Epee_uhtred.glb',
         const model = gltf.scene;
         uhtredGroup.position.set(3.25, -3, 2.8);
 
-        model.scale.set(0.3, 0.3, 0.3); // retrecir le modèle pour qu'il soit visible dans la salle
+        model.scale.set(0.4, 0.4, 0.4); // retrecir le modèle pour qu'il soit visible dans la salle
         console.log(model);
         uhtredGroup.add(model);
     }
 );
-
 gui.add(uhtredGroup.position, 'x', -30, 10).name('Position X');
 gui.add(uhtredGroup.position, 'y', -20, 10).name('Position Y');
 gui.add(uhtredGroup.position, 'z', -20, 10).name('Position Z');
+animate();
+
+
+const hacheGroup = new THREE.Group();
+scene.add(hacheGroup);
+loader.load('/Hache_de_kattegat.glb',
+    (gltf) => {
+        const model = gltf.scene;
+        hacheGroup.position.set(3.12, -3.6, 2.8);
+
+        model.scale.set(0.12, 0.12, 0.12); // retrecir le modèle pour qu'il soit visible dans la salle
+        console.log(model);
+        hacheGroup.add(model);
+    }
+);
+
+gui.add(hacheGroup.position, 'x', -30, 10).name('Position X');
+gui.add(hacheGroup.position, 'y', -20, 10).name('Position Y');
+gui.add(hacheGroup.position, 'z', -20, 10).name('Position Z');
 animate()
