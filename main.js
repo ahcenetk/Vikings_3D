@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { scene, camera, renderer, controls, loader } from './scene.js';
+import './Objets_config/dieu.js';
+import './Objets_config/berserker.js';
 import './Objets_config/ivar.js';
 import './Objets_config/drakkar.js';
 import './Objets_config/armure.js';
