@@ -1,5 +1,7 @@
 import * as THREE from 'three';
 import { scene, camera, renderer, controls, loader } from './scene.js';
+import './Objets_config/ivar.js';
+import './Objets_config/drakkar.js';
 import './Objets_config/armure.js';
 import './Objets_config/shield.js';
 import './Objets_config/thor.js';
