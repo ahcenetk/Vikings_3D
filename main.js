@@ -11,6 +11,7 @@ import './Objets_config/epee.js';
 import './Objets_config/hache.js';
 import './Objets_config/corne.js';
 import './Objets_config/hache_ivar.js';
+import './Objets_config/amleth.js';
 
 // FOND
 const textureLoader = new THREE.TextureLoader();

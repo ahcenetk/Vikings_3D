@@ -3,6 +3,7 @@ import { scene, loader, gui } from '../scene.js';
 
 const DieuGroup = new THREE.Group();
 scene.add(DieuGroup);
+DieuGroup.position.set(0, -2.775, 0);
 
 loader.load('/Statuette_dieu.glb', (gltf) => {
     const model = gltf.scene;
