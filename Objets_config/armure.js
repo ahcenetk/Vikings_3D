@@ -3,7 +3,7 @@ import { scene, loader, gui } from '../scene.js';
 
 const armureGroup = new THREE.Group();
 scene.add(armureGroup);
-armureGroup.position.set(3.12, -2.18, 2.8);
+armureGroup.position.set(3.12, -2.18, 1.15);
 
 loader.load('armure_chef_stoick.glb', (gltf) => {
     const model = gltf.scene;
