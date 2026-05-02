@@ -1,13 +1,245 @@
-/* Supprime les marges par défaut du navigateur */
+/* ==========================================
+   CONFIGURATION GÉNÉRALE
+   ========================================== */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Open+Sans&display=swap');
+
 body {
     margin: 0;
     padding: 0;
-    overflow: hidden; /* Empêche le scroll */
-    background-color: #111; /* Fond sombre en attendant le chargement */
+    overflow: hidden; /* Empêche le scroll pour Three.js */
+    background-color: #111;
 }
 
 #three-canvas {
     display: block;
     width: 100vw;
     height: 100vh;
+}
+
+/* ==========================================
+   INTERFACE UTILISATEUR (OVERLAY PREMIUM)
+   ========================================== */
+#game-ui {
+    /* Positionnement */
+    position: absolute;
+    top: 50%;
+    right: 5vw;
+    transform: translateY(-50%);
+    z-index: 10;
+
+    /* Dimensions et Flexbox */
+    width: 420px;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+
+    /* Style Visuel (Viking RPG) */
+    background: rgba(15, 12, 10, 0.9);
+    backdrop-filter: blur(8px); /* Flou derrière la fenêtre */
+    border: 2px solid #d4af37;
+    border-radius: 12px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), 0 0 20px rgba(212, 175, 55, 0.15);
+    
+    /* Typographie */
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    text-align: center;
+
+    /* Animation d'apparition */
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* État caché */
+#game-ui.hidden {
+    opacity: 0;
+    transform: translateY(-50%) scale(0.95);
+    pointer-events: none;
+}
+
+/* ==========================================
+   ÉLÉMENTS INTERNES DE L'UI
+   ========================================== */
+
+#ui-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+}
+
+#ui-header h2 {
+    margin: 0;
+    font-size: 1.8rem;
+    color: #d4af37;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+    text-transform: uppercase;
+    letter-spacing: 3px;
+}
+
+/* Bouton Fermer (Croix) */
+#close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: #d4af37;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+#close-btn:hover {
+    background: rgba(212, 175, 55, 0.3);
+    transform: scale(1.2) rotate(90deg);
+}
+
+/* Texte de question et indices */
+#question-text {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+#hint-text {
+    color: #ffdf73;
+    font-style: italic;
+    font-size: 1rem;
+    margin-top: 15px;
+    min-height: 1.2em;
+}
+
+/* Champ de saisie */
+#answer-input {
+    width: 100%;
+    padding: 15px;
+    margin: 15px 0;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid #444;
+    border-bottom: 3px solid #d4af37;
+    border-radius: 6px;
+    color: white;
+    font-size: 1.1rem;
+    text-align: center;
+    font-family: 'Open Sans', sans-serif;
+    box-sizing: border-box;
+    transition: all 0.3s;
+}
+
+#answer-input:focus {
+    outline: none;
+    border-color: #ffdf73;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+}
+
+/* Bouton Valider */
+#submit-btn {
+    margin-top: 10px;
+    padding: 12px 35px;
+    background: linear-gradient(145deg, #d4af37, #aa8529);
+    color: #111;
+    border: none;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 0 #7a5f1a;
+    transition: all 0.2s ease;
+}
+
+#submit-btn:hover {
+    background: linear-gradient(145deg, #ffdf73, #cfa35f);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #7a5f1a;
+}
+
+#submit-btn:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #7a5f1a;
+}
+
+/* Messages de retour (Gagné/Perdu) */
+#feedback-message {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 15px;
+    min-height: 1.2em;
+}
+
+/* ==========================================
+   ÉCRAN GAME OVER
+   ========================================== */
+#game-over-ui {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(20, 10, 10, 0.95); /* Fond légèrement rougeâtre */
+    backdrop-filter: blur(10px);
+    border: 2px solid #ff4a4a;
+    border-radius: 12px;
+    padding: 40px 60px;
+    text-align: center;
+    color: #f4e4bc;
+    font-family: 'Cinzel', serif;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 74, 74, 0.3);
+    z-index: 20; /* Au-dessus de tout le reste */
+    transition: opacity 0.4s ease;
+}
+
+#game-over-ui.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#game-over-ui h2 {
+    color: #ff4a4a;
+    font-size: 2.2rem;
+    margin-top: 0;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.8);
+}
+
+#game-over-message {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+}
+
+#restart-btn {
+    padding: 12px 40px;
+    background: linear-gradient(145deg, #8b0000, #4a0000);
+    color: #f4e4bc;
+    border: 1px solid #ff4a4a;
+    border-radius: 6px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    font-family: 'Cinzel', serif;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 0 4px 0 #330000;
+    transition: all 0.2s ease;
+}
+
+#restart-btn:hover {
+    background: linear-gradient(145deg, #ff4a4a, #8b0000);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0 #330000;
+}
+
+#restart-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0 #330000;
 }
