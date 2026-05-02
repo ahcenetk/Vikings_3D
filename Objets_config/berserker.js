@@ -3,11 +3,12 @@ import { scene, loader, gui } from '../scene.js';
 
 const BerserkerGroup = new THREE.Group();
 scene.add(BerserkerGroup);
-BerserkerGroup.scale.set(-2.54, -2.3, 2.925);
+BerserkerGroup.position.set(-3.32, -1.88, 2.8);
 BerserkerGroup.rotation.x = Math.PI ;
 
 loader.load('/masque_berserker.glb', (gltf) => {
     const model = gltf.scene;
+    BerserkerGroup.scale.set(-1, -1, -1);
     BerserkerGroup.add(model);
 });
 

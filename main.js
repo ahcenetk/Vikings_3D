@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { scene, camera, renderer, controls, loader } from './scene.js';
+import { scene, camera, renderer, controls, loader, gui } from './scene.js';
 import './Objets_config/dieu.js';
 import './Objets_config/berserker.js';
 import './Objets_config/ivar.js';
@@ -10,6 +10,14 @@ import './Objets_config/thor.js';
 import './Objets_config/epee.js';
 import './Objets_config/hache.js';
 import './Objets_config/corne.js';
+import './Objets_config/hache_ivar.js';
+import './Objets_config/amleth.js';
+import './Objets_config/corne_a_boire.js';
+import './Objets_config/torche.js';
+import './Objets_config/bouclier_berk.js';
+import './Objets_config/collier_bjorn.js';
+import './Objets_config/pendentif_cercle.js';
+import './Objets_config/pendentif_leif.js';
 
 // FOND
 const textureLoader = new THREE.TextureLoader();
@@ -30,6 +38,12 @@ loader.load('/viking_dining_hall.glb', (gltf) => {
     model.position.sub(center);
     console.log("Salle Viking chargée !");
 });
+
+
+camera.position.set(0.3781410544625605, 1.3255026014798006e-15, 16.583501045766916);
+controls.target.set(0, 0, -5);
+controls.update();
+
 
 // RESIZE
 window.addEventListener('resize', () => {
