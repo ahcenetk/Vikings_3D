@@ -16,6 +16,7 @@ import './Objets_config/corne_a_boire.js';
 import './Objets_config/torche.js';
 import './Objets_config/bouclier_berk.js';
 import './Objets_config/collier_bjorn.js';
+import './Objets_config/pendentif_cercle.js';
 
 // FOND
 const textureLoader = new THREE.TextureLoader();
