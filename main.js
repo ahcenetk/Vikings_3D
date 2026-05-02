@@ -12,6 +12,7 @@ import './Objets_config/hache.js';
 import './Objets_config/corne.js';
 import './Objets_config/hache_ivar.js';
 import './Objets_config/amleth.js';
+import './Objets_config/corne_a_boire.js';
 
 // FOND
 const textureLoader = new THREE.TextureLoader();
