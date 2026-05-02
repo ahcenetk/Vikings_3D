@@ -17,6 +17,7 @@ import './Objets_config/torche.js';
 import './Objets_config/bouclier_berk.js';
 import './Objets_config/collier_bjorn.js';
 import './Objets_config/pendentif_cercle.js';
+import './Objets_config/pendentif_leif.js';
 
 // FOND
 const textureLoader = new THREE.TextureLoader();
