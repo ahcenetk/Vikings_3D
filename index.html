@@ -3,11 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Viking Dining Hall - Three.js</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+        <title>Viking Dining Hall - Three.js</title>
+
 </head>
 <body>
     <canvas id="three-canvas"></canvas>
+
+    <div id="game-ui" class="hidden">
+    <button id="close-btn">X</button>
+    <div id="lives">❤️❤️❤️</div>
+    <div class="quiz-container">
+        <h2>Devine l'œuvre !</h2>
+        <p id="hint-text">Clique sur l'objet pour un indice.</p>
+        <input type="text" id="answer-input" placeholder="Ta réponse...">
+        <button id="submit-btn">Valider</button>
+        <p id="feedback-message"></p>
+    </div>
+</div>
+
+<!-- Écran Game Over -->
+<div id="game-over-ui" class="hidden">
+    <h2>Les Dieux t'ont abandonné...</h2>
+    <p id="game-over-message">La réponse était : </p>
+    <button id="restart-btn">Rejouer</button>
+</div>
 
     <script type="module" src="/main.js"></script>
 </body>
