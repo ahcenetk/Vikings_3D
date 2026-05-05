@@ -7,7 +7,7 @@ corneGroup.position.set(-3.84, -2.75, 4.6);
 
 loader.load('/la_corne_de_guerre.glb', (gltf) => {
     const model = gltf.scene;
-    model.scale.set(0.02, 0.02, 0.02);
+    model.scale.set(0.015, 0.015, 0.015);
     corneGroup.add(model);
 });
 
