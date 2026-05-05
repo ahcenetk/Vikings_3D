@@ -3,7 +3,8 @@ import { scene, loader, gui } from '../scene.js';
 
 const HacheIvarGroup = new THREE.Group();
 scene.add(HacheIvarGroup);
-HacheIvarGroup.position.set(-3.32, -1.88, 2.8);
+HacheIvarGroup.position.set(-8.2, -2.75, 1.52);;
+HacheIvarGroup.rotation.y = Math.PI / 2;
 
 loader.load('/hache_Ivar.glb', (gltf) => {
     const model = gltf.scene;

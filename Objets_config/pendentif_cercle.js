@@ -3,12 +3,14 @@ import { scene, loader, gui } from '../scene.js';
 
 const pendentifCercleGroup = new THREE.Group();
 scene.add(pendentifCercleGroup);
-pendentifCercleGroup.position.set(5.182, -2.92, 2.6);
+pendentifCercleGroup.position.set(5.182, -3.175, 2.6);
 
 loader.load('/pendentif_cercle.glb', (gltf) => {
     const model = gltf.scene;
     pendentifCercleGroup.scale.set(1, 1, 1);
-     model.rotation.y = Math.PI ;
+     model.rotation.y = Math.PI / 2;
+     model.rotation.x = Math.PI / 2;
+     model.rotation.z = Math.PI;
     pendentifCercleGroup.add(model);
 });
 
