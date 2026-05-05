@@ -3,7 +3,7 @@ import { scene, loader, gui } from '../scene.js';
 
 const corneGroup = new THREE.Group();
 scene.add(corneGroup);
-corneGroup.position.set(3.12, -2.18, 2.8);
+corneGroup.position.set(-3.84, -2.75, 4.6);
 
 loader.load('/la_corne_de_guerre.glb', (gltf) => {
     const model = gltf.scene;

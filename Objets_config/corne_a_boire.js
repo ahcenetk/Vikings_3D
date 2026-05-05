@@ -3,7 +3,7 @@ import { scene, loader, gui } from '../scene.js';
 
 const corneAboireGroup = new THREE.Group();
 scene.add(corneAboireGroup);
-corneAboireGroup.position.set(0, -2.775, 4.8);
+corneAboireGroup.position.set(7.71, -2.775, -5.625);
 
 loader.load('/corne_boire_bois.glb', (gltf) => {
     const model = gltf.scene;

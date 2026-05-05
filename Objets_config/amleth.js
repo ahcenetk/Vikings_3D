@@ -7,7 +7,7 @@ pendentifAmlethGroup.position.set(-3.84, -2.66, 6.49);
 
 loader.load('/pendentif_amleth.glb', (gltf) => {
     const model = gltf.scene;
-    pendentifAmlethGroup.scale.set(1, 1, 1);
+    pendentifAmlethGroup.scale.set(0.8, 0.8, 0.8);
     pendentifAmlethGroup.add(model);
 });
 
