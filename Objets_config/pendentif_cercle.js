@@ -14,6 +14,3 @@ loader.load('/pendentif_cercle.glb', (gltf) => {
     pendentifCercleGroup.add(model);
 });
 
-gui.add(pendentifCercleGroup.position, 'x', -12, 10).name('Pendentif Cercle X');
-gui.add(pendentifCercleGroup.position, 'y', -15, 10).name('Pendentif Cercle Y');
-gui.add(pendentifCercleGroup.position, 'z', -15, 10).name('Pendentif Cercle Z');

@@ -11,6 +11,3 @@ loader.load('/masque_ceremonial_ivar.glb', (gltf) => {
     masqueIvarGroup.add(model);
 });
 
-gui.add(masqueIvarGroup.position, 'x', -20, 10).name('Masque Ivar X');
-gui.add(masqueIvarGroup.position, 'y', -15, 10).name('Masque Ivar Y');
-gui.add(masqueIvarGroup.position, 'z', -15, 10).name('Masque Ivar Z');

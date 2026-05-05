@@ -11,6 +11,3 @@ loader.load('/Hache_de_kattegat.glb', (gltf) => {
     hacheGroup.add(model);
 });
 
-gui.add(hacheGroup.position, 'x', -30, 10).name('Hache X');
-gui.add(hacheGroup.position, 'y', -20, 10).name('Hache Y');
-gui.add(hacheGroup.position, 'z', -20, 10).name('Hache Z');

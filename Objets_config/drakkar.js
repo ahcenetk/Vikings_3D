@@ -11,6 +11,3 @@ loader.load('/drakkar_de_berk.glb', (gltf) => {
     drakkarGroup.add(model);
 });
 
-gui.add(drakkarGroup.position, 'x', -30, 10).name('Drakkar X');
-gui.add(drakkarGroup.position, 'y', -20, 10).name('Drakkar Y');
-gui.add(drakkarGroup.position, 'z', -20, 10).name('Drakkar Z');

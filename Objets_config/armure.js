@@ -14,6 +14,3 @@ loader.load('armure_chef_stoick.glb', (gltf) => {
 // Rotation 
 armureGroup.rotation.y = Math.PI;       // 180° → retourne l'objet face à toi -90° → tourne à droite
 
-gui.add(armureGroup.position, 'x', -30, 10).name('Armure X');
-gui.add(armureGroup.position, 'y', -20, 10).name('Armure Y');
-gui.add(armureGroup.position, 'z', -20, 10).name('Armure Z');

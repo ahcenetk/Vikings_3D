@@ -13,6 +13,3 @@ loader.load('/pendentif_amleth.glb', (gltf) => {
     pendentifAmlethGroup.add(model);
 });
 
-gui.add(pendentifAmlethGroup.position, 'x', -30, 10).name('Pendentif Amleth X');
-gui.add(pendentifAmlethGroup.position, 'y', -20, 10).name('Pendentif Amleth Y');
-gui.add(pendentifAmlethGroup.position, 'z', -20, 10).name('Pendentif Amleth Z');

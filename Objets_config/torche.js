@@ -11,6 +11,3 @@ loader.load('/Torche_murale.glb', (gltf) => {
     TorcheGroup.add(model);
 });
 
-gui.add(TorcheGroup.position, 'x', -30, 10).name('Torche X');
-gui.add(TorcheGroup.position, 'y', -20, 10).name('Torche Y');
-gui.add(TorcheGroup.position, 'z', -20, 10).name('Torche Z');

@@ -12,6 +12,3 @@ loader.load('/hache_Ivar.glb', (gltf) => {
     HacheIvarGroup.add(model);
 });
 
-gui.add(HacheIvarGroup.position, 'x', -30, 10).name('Hache Ivar X');
-gui.add(HacheIvarGroup.position, 'y', -20, 10).name('Hache Ivar Y');
-gui.add(HacheIvarGroup.position, 'z', -20, 10).name('Hache Ivar Z');

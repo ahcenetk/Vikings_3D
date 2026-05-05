@@ -12,6 +12,3 @@ loader.load('/corne_boire_bois.glb', (gltf) => {
     corneAboireGroup.add(model);
 });
 
-gui.add(corneAboireGroup.position, 'x', -12, 10).name('Corne à boire X');
-gui.add(corneAboireGroup.position, 'y', -15, 10).name('Corne à boire  Y');
-gui.add(corneAboireGroup.position, 'z', -15, 10).name('Corne à boire Z');

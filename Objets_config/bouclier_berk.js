@@ -11,6 +11,3 @@ loader.load('/Bouclier_berk.glb', (gltf) => {
     BouclierBerkGroup.add(model);
 });
 
-gui.add(BouclierBerkGroup.position, 'x', -12, 10).name('Bouclier Berk X');
-gui.add(BouclierBerkGroup.position, 'y', -15, 10).name('Bouclier Berk Y');
-gui.add(BouclierBerkGroup.position, 'z', -15, 10).name('Bouclier Berk Z');

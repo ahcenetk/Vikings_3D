@@ -4,20 +4,22 @@ import { zoomVersObjet } from './cameraAnimation.js';
 
 const shieldGroup = new THREE.Group();
 scene.add(shieldGroup);
-shieldGroup.position.set(-3.04, -3.28, 0);
+shieldGroup.position.set(-7.2, -4.1, -0.74);
+shieldGroup.rotation.y = Math.PI / 2;
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
 loader.load('/viking_maiden_shield.glb', (gltf) => {
     const model = gltf.scene;
-    
+    model.scale.set(0.8, 0.8, 0.8);
     model.traverse((child) => {
         if (child.isMesh) {
             child.userData.id = "bouclier";
             child.userData.isInteractable = true;
         }
     });
+
 
     shieldGroup.add(model);
     console.log("Bouclier prêt à être cliqué !");

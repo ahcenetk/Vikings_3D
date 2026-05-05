@@ -13,6 +13,3 @@ loader.load('/collier_bjorn.glb', (gltf) => {
     collierBjornGroup.add(model);
 });
 
-gui.add(collierBjornGroup.position, 'x', -30, 10).name('Collier Bjorn X');
-gui.add(collierBjornGroup.position, 'y', -20, 10).name('Collier Bjorn Y');
-gui.add(collierBjornGroup.position, 'z', -20, 10).name('Collier Bjorn Z');

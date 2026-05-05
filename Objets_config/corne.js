@@ -11,6 +11,3 @@ loader.load('/la_corne_de_guerre.glb', (gltf) => {
     corneGroup.add(model);
 });
 
-gui.add(corneGroup.position, 'x', -30, 10).name('Corne X');
-gui.add(corneGroup.position, 'y', -20, 10).name('Corne Y');
-gui.add(corneGroup.position, 'z', -20, 10).name('Corne Z');

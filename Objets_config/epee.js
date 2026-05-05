@@ -11,6 +11,3 @@ loader.load('/Epee_uhtred.glb', (gltf) => {
     uhtredGroup.add(model);
 });
 
-gui.add(uhtredGroup.position, 'x', -30, 10).name('Epee X');
-gui.add(uhtredGroup.position, 'y', -20, 10).name('Epee Y');
-gui.add(uhtredGroup.position, 'z', -20, 10).name('Epee Z');

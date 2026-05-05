@@ -12,6 +12,3 @@ loader.load('/Pendentif_leif_Erickson.glb', (gltf) => {
     pendentifLeifGroup.add(model);
 });
 
-gui.add(pendentifLeifGroup.position, 'x', -12, 10).name('Pendentif Leif X');
-gui.add(pendentifLeifGroup.position, 'y', -15, 10).name('Pendentif Leif Y');
-gui.add(pendentifLeifGroup.position, 'z', -15, 10).name('Pendentif Leif Z');
