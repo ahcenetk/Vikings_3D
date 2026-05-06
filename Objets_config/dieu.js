@@ -26,7 +26,3 @@ loader.load('/Statuette_dieu.glb', (gltf) => {
     DieuGroup.add(model);
     console.log(" Statuette The Last Kingdom centrée et prête !");
 });
-
-gui.add(DieuGroup.position, 'x', -12, 10).name('Dieu X');
-gui.add(DieuGroup.position, 'y', -15, 10).name('Dieu Y');
-gui.add(DieuGroup.position, 'z', -15, 10).name('Dieu Z');
