@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "optimize-assets": "node scripts/optimize-assets.mjs"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -14,6 +15,11 @@
     "three": "^0.184.0"
   },
   "devDependencies": {
+    "@gltf-transform/core": "^4.3.0",
+    "@gltf-transform/extensions": "^4.3.0",
+    "@gltf-transform/functions": "^4.3.0",
+    "draco3dgltf": "^1.5.7",
+    "sharp": "^0.34.5",
     "vite": "^8.0.3"
   }
 }

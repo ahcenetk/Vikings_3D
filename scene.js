@@ -6,38 +6,53 @@ import GUI from 'lil-gui';
 
 export const scene = new THREE.Scene();
 
-// DRACO — loader déclaré AVANT d'y attacher le draco ✅
-export const loader = new GLTFLoader();
+// ──────────────────────────────────────────────
+// LoadingManager partagé : tous les loaders y rapportent leur progrès
+// ──────────────────────────────────────────────
+export const loadingManager = new THREE.LoadingManager();
+
+// GLTFLoader + DRACO branchés sur le manager
+export const loader = new GLTFLoader(loadingManager);
 const dracoLoader = new DRACOLoader();
 dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.5.6/');
 loader.setDRACOLoader(dracoLoader);
 
+// TextureLoader partagé (fond, etc.) — également suivi par le manager
+export const textureLoader = new THREE.TextureLoader(loadingManager);
+
 export const gui = new GUI();
 
+// ──────────────────────────────────────────────
+// Caméra
+// ──────────────────────────────────────────────
 export const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.set(15, 10, 15);
 
+// ──────────────────────────────────────────────
+// Renderer optimisé
+// ──────────────────────────────────────────────
 export const renderer = new THREE.WebGLRenderer({
     canvas: document.querySelector('#three-canvas'),
-    antialias: true
+    antialias: true,
+    powerPreference: 'high-performance',
+    stencil: false
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = false; // pas d'ombres → moins de calculs par frame
 
+// ──────────────────────────────────────────────
+// OrbitControls
+// ──────────────────────────────────────────────
 export const controls = new OrbitControls(camera, renderer.domElement);
 
-controls.enablePan = false; //AJOUT: désactive le déplacement latéral
-
-//AJOUT: Zoom min/max — reste dans la salle
+controls.enablePan = false;
 controls.minDistance = 2;
-controls.maxDistance = 15; // ← ajuste selon ta salle
-
-//AJOUT: Rotation verticale — pas sous le sol ni au plafond
+controls.maxDistance = 15;
 controls.minPolarAngle = Math.PI / 6;
 controls.maxPolarAngle = Math.PI / 1.8;
-
-//AJOUT: Rotation horizontale — reste dans la salle
 controls.minAzimuthAngle = -Math.PI / 2;
 controls.maxAzimuthAngle = Math.PI / 2;
 
-controls.update(); //AJOUT: obligatoire pour appliquer tout ça
+controls.update();

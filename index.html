@@ -3,33 +3,101 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=MedievalSharp&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ui.css">
     <link rel="stylesheet" href="style.css">
-        <title>Viking Dining Hall - Three.js</title>
-
+    <title>Viking Dining Hall - Three.js</title>
 </head>
 <body>
+
+    <!-- ====== LANDING PAGE ====== -->
+    <section id="landing-screen" class="screen">
+        <div class="fog"></div>
+        <div class="runes-bg"></div>
+        <div class="content">
+            <div class="rune-line">ᚠ ᛟ ᛏ ᚺ ᛖ ᛁ ᛗ</div>
+            <h1>Enter the Viking World</h1>
+            <p class="subtitle">Au seuil du Valhalla, l'aventure t'attend...</p>
+            <button id="start-btn" class="viking-btn">Commencer l'expérience</button>
+        </div>
+    </section>
+
+    <!-- ====== TUTORIEL ====== -->
+    <section id="tutorial-screen" class="screen hidden">
+        <div class="fog"></div>
+        <div class="runes-bg"></div>
+        <div class="content">
+            <h2>Le Codex du Guerrier</h2>
+            <p class="tagline">Apprends les voies avant d'entrer dans la salle...</p>
+
+            <div class="tutorial-text">
+                <article>
+                    <h3>Déplacer la caméra</h3>
+                    <p>Maintiens le clic gauche et glisse la souris pour faire pivoter la vue autour de la salle viking. Utilise la molette pour zoomer ou dézoomer librement et observer les moindres détails de l'environnement.</p>
+                </article>
+
+                <article>
+                    <h3>Interagir avec les objets</h3>
+                    <p>Clique sur n'importe quel artefact — épée, hache, drakkar, bouclier, corne ou pendentif — pour l'examiner de plus près. La caméra zoome alors sur la relique et l'énigme commence.</p>
+                </article>
+
+                <article>
+                    <h3>Résoudre l'énigme</h3>
+                    <p>Pour chaque objet, devine de quelle œuvre il provient et tape ta réponse dans le champ prévu. Tu disposes de <strong>trois vies</strong> et de plusieurs indices progressifs pour t'aider.</p>
+                </article>
+
+                <article>
+                    <h3>Objectif</h3>
+                    <p>Identifie l'origine cinématographique de chaque relique légendaire et prouve ta valeur aux yeux des Dieux du Nord. Que ton instinct de scalde te guide jusqu'au Valhalla.</p>
+                </article>
+            </div>
+
+            <button id="begin-adventure-btn" class="viking-btn">Commencer l'aventure</button>
+        </div>
+    </section>
+
+    <!-- ====== LOADER ====== -->
+    <section id="loader-screen" class="screen hidden">
+        <div class="fog"></div>
+        <div class="runes-bg"></div>
+        <div class="content">
+            <div class="loader-runes">ᚱ ᚨ ᚷ ᚾ ᚨ ᚱ</div>
+            <h2>Loading the Viking World<span class="dots"></span></h2>
+            <div class="progress-wrapper">
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="progress-text">
+                    Forge des runes : <span class="progress-percent">0%</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ====== CANVAS THREE.JS ====== -->
     <canvas id="three-canvas"></canvas>
 
+    <!-- ====== UI DE JEU (existante) ====== -->
     <div id="game-ui" class="hidden">
-    <button id="close-btn">X</button>
-    <div id="lives">❤️❤️❤️</div>
-    <div class="quiz-container">
-        <h2>Devine l'œuvre !</h2>
-        <p id="hint-text">Clique sur l'objet pour un indice.</p>
-        <input type="text" id="answer-input" placeholder="Ta réponse...">
-        <button id="submit-btn">Valider</button>
-        <p id="feedback-message"></p>
+        <button id="close-btn">X</button>
+        <div id="lives">❤️❤️❤️</div>
+        <div class="quiz-container">
+            <h2>Devine l'œuvre !</h2>
+            <p id="hint-text">Clique sur l'objet pour un indice.</p>
+            <input type="text" id="answer-input" placeholder="Ta réponse...">
+            <button id="submit-btn">Valider</button>
+            <p id="feedback-message"></p>
+        </div>
     </div>
-</div>
 
-<!-- Écran Game Over -->
-<div id="game-over-ui" class="hidden">
-    <h2>Les Dieux t'ont abandonné...</h2>
-    <p id="game-over-message">La réponse était : </p>
-    <button id="restart-btn">Rejouer</button>
-</div>
+    <!-- Écran Game Over -->
+    <div id="game-over-ui" class="hidden">
+        <h2>Les Dieux t'ont abandonné...</h2>
+        <p id="game-over-message">La réponse était : </p>
+        <button id="restart-btn">Rejouer</button>
+    </div>
 
-    <script type="module" src="/main.js"></script>
+    <!-- L'orchestrateur des écrans charge dynamiquement main.js après le tutoriel -->
+    <script type="module" src="/uiManager.js"></script>
 </body>
 </html>
