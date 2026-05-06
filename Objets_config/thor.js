@@ -4,19 +4,16 @@ import { scene, loader } from '../scene.js';
 const thorGroup = new THREE.Group();
 scene.add(thorGroup);
 
-// Tes coordonnées d'origine
 thorGroup.position.set(-5.12, -3.3, 2.8);
 
-// 🏷️ LES ÉTIQUETTES POUR LE JEU
 thorGroup.userData.id = "thor"; 
 thorGroup.userData.isInteractable = true;
-thorGroup.userData.axeRotation = "y"; // Il tournera sur lui-même
+thorGroup.userData.axeRotation = "y"; 
 
 loader.load('/marvel_thors_hammer_mjolnir.glb', (gltf) => {
     const model = gltf.scene;
     model.scale.set(1.5, 1.5, 1.5);
 
-    // 🎯 CENTRAGE AUTOMATIQUE
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     
@@ -25,5 +22,5 @@ loader.load('/marvel_thors_hammer_mjolnir.glb', (gltf) => {
     model.position.z = -center.z;
 
     thorGroup.add(model);
-    console.log("⚡️ Mjölnir est en place et prêt à tonner !");
+    console.log("Mjölnir est en place et prêt à tonner !");
 });

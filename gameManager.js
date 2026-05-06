@@ -16,6 +16,8 @@ let initialRotY = 0;
 // Logique Quiz
 let lives = 3;
 let errors = 0;
+let objectsFound = 0; 
+const TOTAL_OBJECTS = 18;
 
 // --- 2. GESTION DES DONNÉES GLOBALES ---
 let allMoviesData = [];       
@@ -82,36 +84,30 @@ export function initGame() {
                     targetObject = clickedObject;
                     isObjectSelected = true;
                     
-                    // ✅ 1. SAUVEGARDE DE LA POSITION INITIALE
                     initialPosition.copy(targetObject.position);
                     initialRotZ = targetObject.rotation.z;
                     initialRotY = targetObject.rotation.y; 
 
-                    // --- 2. CALCUL DE LA DIRECTION FINALE ---
-                    let destinationX = initialPosition.x + 1.5; // Droite par défaut
-                    let destinationY = initialPosition.y + 1;   // Hauteur par défaut
+                    let destinationX = initialPosition.x + 1.5; 
+                    let destinationY = initialPosition.y + 1;   
 
                     if (objectId === "how_to_train_your_dragon") {
                         destinationX = initialPosition.x - 3; // Gauche pour l'armure de Stoïck
-                    } else if (objectId === "vikings" || objectId === "the_last_kingdom" || objectId === "thor" || objectId === "corne_guerre"  ) {
-                        destinationX = initialPosition.x; // ✅ Sur place pour Ivar ET Dieu
+                    } else if (objectId === "vikings" || objectId === "the_last_kingdom" || objectId === "thor" || objectId === "corne_guerre" || objectId === "hache_kattegat" || objectId === "pendentif_amleth") {
+                        destinationX = initialPosition.x; 
                     }
-                    else if (objectId === "corne_last_kingdom" ) {
-                        // ✅ RÉGLAGE UNIQUE POUR LA CORNE
+                    else if (objectId === "corne_last_kingdom" || objectId === "pendentif_leif") {
                         destinationX = initialPosition.x - 3; 
-                        console.log(" Corne à gauche !");
+                        console.log(" Corne à gauche");
                     }
-                    else if (objectId === "vikings_torche" ) {
-                        // ✅ RÉGLAGE UNIQUE POUR LA CORNE
+                    else if (objectId === "vikings_torche" || objectId === "vikings_hache_ivar" ) {
                         destinationX = initialPosition.x + 3; 
                         console.log(" Corne à droite !");
                     }
 
-                    // 🪄 3. ASTUCE MAGIQUE : Téléportation temporaire de l'objet
                     targetObject.position.set(destinationX, destinationY, initialPosition.z);
                     targetObject.updateMatrixWorld(); 
 
-                    // 🎥 4. La caméra calcule son zoom vers la NOUVELLE position
                     zoomVersObjet(camera, controls, targetObject);
 
                     // 🔙 5. On remet instantanément l'objet à sa place d'origine
@@ -153,14 +149,16 @@ export function initGame() {
         const userAnswer = answerInput.value.toLowerCase().trim();
 
         if (currentMovieData.accepted_answers.includes(userAnswer)) {
+            objectsFound++;
+
             feedbackMessage.style.color = "#4ade80";
-            feedbackMessage.innerText = "Félicitations ! ✨";
+            feedbackMessage.innerText = "Félicitations ! ";
             hintText.innerText = currentMovieData.funFact;
             submitBtn.disabled = true;
 
             gsap.to(targetObject.rotation, {
                 y: targetObject.rotation.y + Math.PI * 4, 
-                duration: 2,
+                duration: 4,
                 ease: "power2.inOut"
             });
             
@@ -177,6 +175,13 @@ export function initGame() {
                 currentMovieData = null; 
                 answerInput.value = ""; 
                 submitBtn.disabled = false; 
+
+                if (objectsFound >= TOTAL_OBJECTS) {
+                    const gameWinUI = document.getElementById('game-win-ui');
+                    if (gameWinUI) {
+                        gameWinUI.style.display = 'flex';
+                    }
+                }
             }, 3500);
 
         } else {
@@ -206,6 +211,14 @@ export function initGame() {
     const restartBtn = document.getElementById('restart-btn');
     if (restartBtn) {
         restartBtn.onclick = () => { location.reload(); };
+    }
+
+    const restartWinBtn = document.getElementById('restart-win-btn'); 
+    if (restartWinBtn) {
+        restartWinBtn.addEventListener('click', (event) => {
+            event.stopPropagation(); 
+            window.location.reload(); 
+        });
     }
 
     closeBtn.onclick = () => {
