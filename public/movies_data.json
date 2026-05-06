@@ -117,4 +117,53 @@
     "accepted_answers": ["the last kingdom", "seven kings must die"],
     "funFact": "Dans The Last Kingdom, la corne de guerre est utilisée pour signaler le début des batailles épiques entre Saxons et Vikings."
     }
+    ,
+    {
+    "id": "hache_kattegat",
+    "title": "Vikings",
+    "type": "série",
+    "release_year": "2013",
+    "accepted_answers": ["vikings"],
+    "funFact": "Kattegat est le centre de pouvoir dans la série Vikings, et cette hache symbolise le destin de ceux qui cherchent à régner sur la Norvège."
+    },
+    {
+    "id": "vikings_hache_ivar",
+    "title": "Vikings",
+    "type": "série",
+    "release_year": "2013",
+    "accepted_answers": ["vikings"],
+    "funFact": "Ivar le Désossé compensait son handicap physique par une rage implacable et une précision mortelle au lancer de hache."
+    },
+    {
+    "id": "epee_uhtred",
+    "title": "The Last Kingdom",
+    "type": "série",
+    "release_year": "2015",
+    "accepted_answers": ["the last kingdom", "seven kings must die"],
+    "funFact": "L'épée d'Uhtred est baptisée 'Souffle-Serpent' (Serpent-Breath) et possède un pommeau en ambre unique."
+    },
+    {
+    "id": "berserker_northman",
+    "title": "The Northman",
+    "type": "film",
+    "release_year": "2022",
+    "accepted_answers": ["the northman", "amleth", "northman"],
+    "funFact": "Les Berserkers tiraient leur force d'une transe rituelle, se connectant à l'esprit de l'ours ou du loup avant la bataille."
+    },
+    {
+    "id": "pendentif_amleth",
+    "title": "The Northman",
+    "type": "film",
+    "release_year": "2022",
+    "accepted_answers": ["the northman", "amleth", "northman"],
+    "funFact": "Amleth, le prince viking en quête de vengeance, est la figure mythologique qui a directement inspiré le personnage de Hamlet à William Shakespeare."
+    },
+    {
+    "id": "pendentif_leif",
+    "title": "Vikings: Valhalla",
+    "type": "série",
+    "release_year": "2022",
+    "accepted_answers": ["vikings valhalla", "valhalla"],
+    "funFact": "100 ans après les premiers vikings, l'histoire de leurs descendants, parmi lesquels les légendaires Leif Erikson, Freydis, Harald Harada et William Le..."
+ }
 ]
