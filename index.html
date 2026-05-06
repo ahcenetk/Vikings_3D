@@ -89,13 +89,29 @@
             <p id="feedback-message"></p>
         </div>
     </div>
-
+    
 <!-- Écran Game Over -->
 <div id="game-over-ui" class="hidden">
     <h2>Les Dieux t'ont abandonné...</h2>
     <p id="game-over-message">La réponse était : </p>
     <button id="restart-btn">Rejouer</button>
 </div>
+
+    <!-- 🏆 UI de Victoire (Pop-up Valhalla) -->
+    <div id="game-win-ui" style="display: none; position: absolute; inset: 0; align-items: center; justify-content: center; background-color: rgba(0, 0, 0, 0.85); z-index: 50; font-family: 'Cinzel', serif;">
+        <div style="background-color: #110a05; border: 2px solid #fbbf24; padding: 4rem 3rem; border-radius: 12px; text-align: center; max-width: 600px; width: 90%; box-shadow: 0 0 30px rgba(251, 191, 36, 0.15);">
+            <h2 style="color: #fbbf24; font-size: 2.5rem; font-weight: 700; margin-bottom: 2rem; text-transform: uppercase; letter-spacing: 2px;">Victoire</h2>
+            <p style="color: #fef3c7; font-size: 1.2rem; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 1px; line-height: 1.6;">Tu as trouvé les 18 objets !<br>Le Valhalla t'ouvre ses portes.</p>
+            <button id="restart-win-btn" style="background-color: #78350f; color: #fef3c7; border: 1px solid #fbbf24; padding: 0.8rem 3rem; border-radius: 6px; font-size: 1.2rem; font-family: 'Cinzel', serif; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; transition: 0.3s;">
+                REJOUER
+            </button>
+        </div>
+    </div>
+
+    
+
+
+
 
     <!-- L'orchestrateur des écrans charge dynamiquement main.js après le tutoriel -->
     <script type="module" src="/uiManager.js"></script>
