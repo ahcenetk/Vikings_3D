@@ -91,5 +91,30 @@
         "difficulty": "difficile",
         "funFact": "Contraint à l'exil par son calife, pour avoir séduit la femme d'un autre, Ahmed Ibn Fahdlan est envoyé comme ambassadeur en Asie mineure. Une prophéti...",
         "model3D_ref": "armure"
+    },
+    {
+    "id": "corne_last_kingdom",
+    "title": "The Last Kingdom",
+    "type": "série",
+    "release_year": "2015",
+    "accepted_answers": ["the last kingdom", "seven kings must die"],
+    "funFact": "Les cornes à boire étaient souvent richement décorées pour afficher le statut social de leur propriétaire."
+    },
+    {
+    "id": "corne_guerre",
+    "title": "The Last Kingdom",
+    "type": "série",
+    "release_year": "2015",
+    "accepted_answers": ["the last kingdom", "seven kings must die"],
+    "funFact": "Dans The Last Kingdom, la corne de guerre est utilisée pour signaler le début des batailles épiques entre Saxons et Vikings."
+    }
+    ,
+    {
+    "id": "vikings_torche",
+    "title": "The Last Kingdom",
+    "type": "série",
+    "release_year": "2015",
+    "accepted_answers": ["the last kingdom", "seven kings must die"],
+    "funFact": "Dans The Last Kingdom, la corne de guerre est utilisée pour signaler le début des batailles épiques entre Saxons et Vikings."
     }
 ]

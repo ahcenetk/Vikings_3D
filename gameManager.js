@@ -1,35 +1,34 @@
 import * as THREE from 'three';
-import { camera, scene } from './scene.js';
+import { camera, scene, controls } from './scene.js';
+import { zoomVersObjet } from './Objets_config/cameraAnimation.js';
+import gsap from 'gsap';
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 
-// États du jeu
-let isShieldSelected = false;
-let targetShield = null;
+// --- 1. VARIABLES ---
+let isObjectSelected = false; 
+let targetObject = null;      
 let initialPosition = new THREE.Vector3();
 let initialRotZ = 0;
+let initialRotY = 0; 
 
 // Logique Quiz
 let lives = 3;
 let errors = 0;
-let movieData = null;
 
-// 1. CHARGEMENT DE L'API (Générée par scraper.py)
+// --- 2. GESTION DES DONNÉES GLOBALES ---
+let allMoviesData = [];       
+let currentMovieData = null;  
+
 async function loadGameData() {
     try {
         const response = await fetch('/movies_data.json'); 
-        const data = await response.json();
-        
-        // On cherche l'ID exact généré par ton scraper pour Vikings
-        movieData = data.find(m => m.id === "vikings");
-        
-        if (movieData) {
-            console.log("✅ Données Vikings chargées :", movieData.title);
-            updateLivesDisplay();
-        }
+        allMoviesData = await response.json(); 
+        console.log("✅ Données chargées :", allMoviesData.length, "œuvres prêtes pour le quiz !");
+        updateLivesDisplay();
     } catch (e) {
-        console.error("❌ Erreur de lecture du JSON. Vérifie que le scraper a bien tourné !", e);
+        console.error("❌ Erreur de lecture du JSON.", e);
     }
 }
 
@@ -50,9 +49,8 @@ export function initGame() {
     const feedbackMessage = document.getElementById('feedback-message');
     const hintText = document.getElementById('hint-text');
 
-    // DÉTECTION DU CLIC
     window.addEventListener('click', (event) => {
-        if (isShieldSelected || !movieData) return;
+        if (isObjectSelected || allMoviesData.length === 0) return;
 
         mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -62,60 +60,126 @@ export function initGame() {
 
         if (intersects.length > 0) {
             let obj = intersects[0].object;
-            let shieldObj = null;
+            let clickedObject = null;
+            let objectId = null;
 
-            // On vérifie si l'objet ou un parent a l'ID "bouclier"
-            if (obj.userData.id === "bouclier") shieldObj = obj;
-            else {
+            if (obj.userData && obj.userData.id) {
+                clickedObject = obj;
+                objectId = obj.userData.id;
+            } else {
                 obj.traverseAncestors((ancestor) => {
-                    if (ancestor.userData.id === "bouclier") shieldObj = ancestor;
+                    if (ancestor.userData && ancestor.userData.id) {
+                        clickedObject = ancestor;
+                        objectId = ancestor.userData.id;
+                    }
                 });
             }
 
-            if (shieldObj) {
-                targetShield = shieldObj;
-                isShieldSelected = true;
-                initialPosition.copy(targetShield.position);
-                initialRotZ = targetShield.rotation.z;
+            if (clickedObject && objectId) {
+                currentMovieData = allMoviesData.find(m => m.id === objectId || m.model3D_ref === objectId);
 
-                // On fait briller l'objet
-                targetShield.traverse((child) => {
-                    if (child.isMesh) {
-                        child.material.emissive = new THREE.Color(0x443300);
-                        child.material.emissiveIntensity = 1;
+                if (currentMovieData) {
+                    targetObject = clickedObject;
+                    isObjectSelected = true;
+                    
+                    // ✅ 1. SAUVEGARDE DE LA POSITION INITIALE
+                    initialPosition.copy(targetObject.position);
+                    initialRotZ = targetObject.rotation.z;
+                    initialRotY = targetObject.rotation.y; 
+
+                    // --- 2. CALCUL DE LA DIRECTION FINALE ---
+                    let destinationX = initialPosition.x + 1.5; // Droite par défaut
+                    let destinationY = initialPosition.y + 1;   // Hauteur par défaut
+
+                    if (objectId === "how_to_train_your_dragon") {
+                        destinationX = initialPosition.x - 3; // Gauche pour l'armure de Stoïck
+                    } else if (objectId === "vikings" || objectId === "the_last_kingdom" || objectId === "thor" || objectId === "corne_guerre"  ) {
+                        destinationX = initialPosition.x; // ✅ Sur place pour Ivar ET Dieu
                     }
-                });
+                    else if (objectId === "corne_last_kingdom" ) {
+                        // ✅ RÉGLAGE UNIQUE POUR LA CORNE
+                        destinationX = initialPosition.x - 3; 
+                        console.log(" Corne à gauche !");
+                    }
+                    else if (objectId === "vikings_torche" ) {
+                        // ✅ RÉGLAGE UNIQUE POUR LA CORNE
+                        destinationX = initialPosition.x + 3; 
+                        console.log(" Corne à droite !");
+                    }
 
-                gameUI.classList.remove('hidden');
-                feedbackMessage.innerText = "";
-                hintText.innerText = "De quelle œuvre provient ce bouclier ?";
+                    // 🪄 3. ASTUCE MAGIQUE : Téléportation temporaire de l'objet
+                    targetObject.position.set(destinationX, destinationY, initialPosition.z);
+                    targetObject.updateMatrixWorld(); 
+
+                    // 🎥 4. La caméra calcule son zoom vers la NOUVELLE position
+                    zoomVersObjet(camera, controls, targetObject);
+
+                    // 🔙 5. On remet instantanément l'objet à sa place d'origine
+                    targetObject.position.copy(initialPosition);
+                    targetObject.updateMatrixWorld();
+
+                    // 🎬 6. ANIMATION FLUIDE : L'objet rejoint la caméra !
+                    gsap.to(targetObject.position, {
+                        x: destinationX, 
+                        y: destinationY,   
+                        duration: 1,
+                        ease: "power2.out"
+                    });
+
+                    // ✅ CORRECTION LUMIÈRE JAUNE (Appliquée à tous)
+                    targetObject.traverse((child) => {
+                        if (child.isMesh && child.material) {
+                            if (child.material.emissive !== undefined) {
+                                child.material.emissive.setHex(0x664400);
+                                child.material.emissiveIntensity = 2;
+                            } else if (child.material.color) {
+                                child.userData.oldColor = child.material.color.getHex();
+                                child.material.color.setHex(0xffcc00);
+                            }
+                            child.material.needsUpdate = true; 
+                        }
+                    });
+
+                    gameUI.classList.remove('hidden');
+                    feedbackMessage.innerText = "";
+                    hintText.innerText = "De quelle œuvre provient cet objet ?";
+                }
             }
         }
     });
 
- // 2. LOGIQUE DE VALIDATION
     submitBtn.onclick = () => {
-        if (!movieData) return;
-
+        if (!currentMovieData) return;
         const userAnswer = answerInput.value.toLowerCase().trim();
 
-        // --- SI BONNE RÉPONSE ---
-        if (movieData.accepted_answers.includes(userAnswer)) {
+        if (currentMovieData.accepted_answers.includes(userAnswer)) {
             feedbackMessage.style.color = "#4ade80";
             feedbackMessage.innerText = "Félicitations ! ✨";
-            hintText.innerText = movieData.funFact;
+            hintText.innerText = currentMovieData.funFact;
             submitBtn.disabled = true;
 
-            // NOUVEAU : On fait disparaître l'objet après 3,5 secondes (le temps de lire l'anecdote)
+            gsap.to(targetObject.rotation, {
+                y: targetObject.rotation.y + Math.PI * 4, 
+                duration: 2,
+                ease: "power2.inOut"
+            });
+            
+            gsap.to(targetObject.scale, {
+                x: 0, y: 0, z: 0,
+                duration: 1.5, delay: 1.5, 
+                ease: "back.in(1.5)"
+            });
+
             setTimeout(() => {
-                targetShield.visible = false; // L'objet devient invisible
-                gameUI.classList.add('hidden'); // On ferme l'interface de quiz
-                isShieldSelected = false; // On libère la caméra et les clics
+                targetObject.visible = false; 
+                gameUI.classList.add('hidden'); 
+                isObjectSelected = false; 
+                currentMovieData = null; 
+                answerInput.value = ""; 
+                submitBtn.disabled = false; 
             }, 3500);
 
-        } 
-        // --- SI MAUVAISE RÉPONSE ---
-        else {
+        } else {
             errors++;
             lives--;
             updateLivesDisplay();
@@ -124,50 +188,68 @@ export function initGame() {
             feedbackMessage.innerText = "Ce n'est pas ça...";
 
             if (errors === 1) {
-                hintText.innerText = `Indice 1 : C'est un(e) ${movieData.type} sorti en ${movieData.release_year}.`;
+                hintText.innerText = `Indice 1 : C'est un(e) ${currentMovieData.type} sorti en ${currentMovieData.release_year}.`;
             } else if (errors === 2) {
-                hintText.innerText = "Indice 2 : On y suit les aventures de Ragnar Lothbrok et Lagertha.";
+                hintText.innerText = "Indice 2 : Rapproche-toi et regarde bien les détails de l'objet...";
             }
 
-            // NOUVEAU : LOGIQUE DE GAME OVER
             if (lives <= 0) {
-                // On cache l'interface de quiz
                 gameUI.classList.add('hidden');
-                
-                // On prépare et on affiche l'écran Game Over
                 const gameOverUI = document.getElementById('game-over-ui');
                 const gameOverMessage = document.getElementById('game-over-message');
-                gameOverMessage.innerText = `C'était : ${movieData.title}`;
+                gameOverMessage.innerText = `C'était : ${currentMovieData.title}`;
                 gameOverUI.classList.remove('hidden');
             }
         }
-    };
+    }; 
 
-    // NOUVEAU : Écouteur pour le bouton Rejouer
     const restartBtn = document.getElementById('restart-btn');
     if (restartBtn) {
-        restartBtn.onclick = () => {
-            location.reload(); // Recharge la page proprement pour relancer la partie
-        };
+        restartBtn.onclick = () => { location.reload(); };
     }
+
     closeBtn.onclick = () => {
-        isShieldSelected = false;
+        isObjectSelected = false;
         gameUI.classList.add('hidden');
-        if (targetShield) {
-            targetShield.traverse((child) => {
-                if (child.isMesh) child.material.emissive = new THREE.Color(0x000000);
+        currentMovieData = null; 
+        answerInput.value = ""; 
+        submitBtn.disabled = false;
+        
+        if (targetObject) {
+            targetObject.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    if (child.material.emissive !== undefined) {
+                        child.material.emissive.setHex(0x000000);
+                    } else if (child.material.color && child.userData.oldColor) {
+                        child.material.color.setHex(child.userData.oldColor);
+                    }
+                    child.material.needsUpdate = true;
+                }
+            });
+
+            gsap.to(targetObject.position, {
+                x: initialPosition.x,
+                y: initialPosition.y,
+                z: initialPosition.z,
+                duration: 1,
+                ease: "power2.inOut"
+            });
+
+            gsap.to(targetObject.rotation, {
+                z: initialRotZ,
+                y: initialRotY, 
+                duration: 1
             });
         }
     };
-}
+} 
 
 export function updateGameAnimations() {
-    if (!targetShield || !isShieldSelected) return;
-
-    // Animation de lévitation
-    const hoverY = initialPosition.y + 0.5;
-    targetShield.position.y = THREE.MathUtils.lerp(targetShield.position.y, hoverY, 0.05);
+    if (!targetObject || !isObjectSelected) return;
     
-    // Rotation "à plat" (Z)
-    targetShield.rotation.z += 0.02;
+    if (targetObject.userData.axeRotation === "y") {
+        targetObject.rotation.y += 0.01; 
+    } else {
+        targetObject.rotation.z += 0.01; 
+    }
 }

@@ -26,18 +26,18 @@ renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
 export const controls = new OrbitControls(camera, renderer.domElement);
 
-controls.enablePan = false; // ✅ AJOUT: désactive le déplacement latéral
+controls.enablePan = false; //AJOUT: désactive le déplacement latéral
 
-// ✅ AJOUT: Zoom min/max — reste dans la salle
+//AJOUT: Zoom min/max — reste dans la salle
 controls.minDistance = 2;
 controls.maxDistance = 15; // ← ajuste selon ta salle
 
-// ✅ AJOUT: Rotation verticale — pas sous le sol ni au plafond
+//AJOUT: Rotation verticale — pas sous le sol ni au plafond
 controls.minPolarAngle = Math.PI / 6;
 controls.maxPolarAngle = Math.PI / 1.8;
 
-// ✅ AJOUT: Rotation horizontale — reste dans la salle
+//AJOUT: Rotation horizontale — reste dans la salle
 controls.minAzimuthAngle = -Math.PI / 2;
 controls.maxAzimuthAngle = Math.PI / 2;
 
-controls.update(); // ✅ AJOUT: obligatoire pour appliquer tout ça
+controls.update(); //AJOUT: obligatoire pour appliquer tout ça
