@@ -1,10 +1,54 @@
 import * as THREE from 'three';
 import { camera, scene, controls } from './scene.js';
 import { zoomVersObjet } from './Objets_config/cameraAnimation.js';
+import { ACTIONS, settingsStore } from './src/ui/settingsStore.js';
 import gsap from 'gsap';
 
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
+
+function isUiClick(event) {
+    return Boolean(event.target?.closest?.('#game-ui, #game-over-ui, #game-win-ui, .screen, #settings-menu-root'));
+}
+
+function setInteractionRay(event) {
+    if (controls.isFPSController && controls.isLocked) {
+        mouse.set(0, 0);
+    } else if (Number.isFinite(event?.clientX) && Number.isFinite(event?.clientY)) {
+        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    } else {
+        mouse.set(0, 0);
+    }
+
+    raycaster.setFromCamera(mouse, camera);
+}
+
+function findInteractableHit(intersects) {
+    for (const hit of intersects) {
+        let clickedObject = null;
+        let objectId = null;
+        const obj = hit.object;
+
+        if (obj.userData?.id) {
+            clickedObject = obj;
+            objectId = obj.userData.id;
+        } else {
+            obj.traverseAncestors((ancestor) => {
+                if (!clickedObject && ancestor.userData?.id) {
+                    clickedObject = ancestor;
+                    objectId = ancestor.userData.id;
+                }
+            });
+        }
+
+        if (clickedObject && objectId) {
+            return { clickedObject, objectId };
+        }
+    }
+
+    return null;
+}
 
 // --- 1. VARIABLES ---
 let isObjectSelected = false; 
@@ -51,31 +95,18 @@ export function initGame() {
     const feedbackMessage = document.getElementById('feedback-message');
     const hintText = document.getElementById('hint-text');
 
-    window.addEventListener('click', (event) => {
+    function tryInteract(event) {
+        if (settingsStore.getState().isSettingsOpen) return;
         if (isObjectSelected || allMoviesData.length === 0) return;
+        if (isUiClick(event)) return;
 
-        mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        raycaster.setFromCamera(mouse, camera);
+        setInteractionRay(event);
 
         const intersects = raycaster.intersectObjects(scene.children, true);
+        const interactableHit = findInteractableHit(intersects);
 
-        if (intersects.length > 0) {
-            let obj = intersects[0].object;
-            let clickedObject = null;
-            let objectId = null;
-
-            if (obj.userData && obj.userData.id) {
-                clickedObject = obj;
-                objectId = obj.userData.id;
-            } else {
-                obj.traverseAncestors((ancestor) => {
-                    if (ancestor.userData && ancestor.userData.id) {
-                        clickedObject = ancestor;
-                        objectId = ancestor.userData.id;
-                    }
-                });
-            }
+        if (interactableHit) {
+            const { clickedObject, objectId } = interactableHit;
 
             if (clickedObject && objectId) {
                 currentMovieData = allMoviesData.find(m => m.id === objectId || m.model3D_ref === objectId);
@@ -142,7 +173,19 @@ export function initGame() {
                 }
             }
         }
-    });
+    }
+
+    window.addEventListener('click', tryInteract);
+
+    window.addEventListener('keydown', (event) => {
+        if (event.repeat) return;
+        if (settingsStore.getState().isSettingsOpen) return;
+        if (settingsStore.getActionForCode(event.code) !== ACTIONS.INTERACT) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+        tryInteract(event);
+    }, { capture: true });
 
     submitBtn.onclick = () => {
         if (!currentMovieData) return;

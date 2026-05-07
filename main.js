@@ -1,5 +1,13 @@
 import * as THREE from 'three';
-import { scene, camera, renderer, controls, loader, textureLoader } from './scene.js';
+import { scene, camera, renderer, controls, loader, textureLoader, collisionSystem } from './scene.js';
+import { audioManager } from './src/audio/AudioManager.js';
+import { createCollidersFromGLTF, createWallColliders } from './src/collision/ColliderFactory.js';
+import { GameSettingsMenu } from './src/ui/GameSettingsMenu.js';
+import { settingsStore } from './src/ui/settingsStore.js';
+import {
+    CAMERA_EYE_HEIGHT,
+    PLAYER_START_POSITION
+} from './src/config/playerSettings.js';
 import './Objets_config/dieu.js';
 import './Objets_config/berserker.js';
 import './Objets_config/ivar.js';
@@ -38,6 +46,26 @@ directionalLight.position.set(5, 10, 7);
 directionalLight.castShadow = false;
 scene.add(directionalLight);
 
+// Audio global non positionnel. La lecture reelle demarre apres le premier
+// geste utilisateur pour rester compatible avec les navigateurs.
+audioManager.initAudio(camera);
+audioManager.loadAmbientMusic().catch((error) => {
+    console.warn('Musique ambiante indisponible.', error);
+});
+window.addEventListener('beforeunload', () => audioManager.dispose(), { once: true });
+
+const settingsMenu = new GameSettingsMenu({
+    audioManager,
+    controls,
+    collisionSystem,
+    scene,
+    camera
+});
+
+// Colliders fixes, separes du mesh visuel. Ajuster VIKING_HALL_COLLIDER_LAYOUT
+// dans ColliderFactory.js pour modifier la zone jouable.
+createWallColliders({ collisionSystem });
+
 // ──────────────────────────────────────────────
 // SALLE VIKING
 // ──────────────────────────────────────────────
@@ -47,14 +75,29 @@ loader.load('/viking_dining_hall.glb', (gltf) => {
     const box = new THREE.Box3().setFromObject(model);
     const center = box.getCenter(new THREE.Vector3());
     model.position.sub(center);
+    model.updateMatrixWorld(true);
+
+    const generatedColliders = createCollidersFromGLTF(model, {
+        collisionSystem,
+        source: 'viking-dining-hall',
+        shrink: settingsStore.getState().colliderShrink
+    });
+
+    if (generatedColliders.length > 0) {
+        console.info(`${generatedColliders.length} colliders GLTF crees pour la salle viking.`);
+    }
 });
 
 // ──────────────────────────────────────────────
 // CAMÉRA
 // ──────────────────────────────────────────────
-camera.position.set(0.3781410544625605, 1.3255026014798006e-15, 16.583501045766916);
-controls.target.set(0, 0, -5);
-controls.update();
+const initialSettings = settingsStore.getState();
+camera.position.set(
+    PLAYER_START_POSITION.x,
+    PLAYER_START_POSITION.y - CAMERA_EYE_HEIGHT + initialSettings.cameraHeight,
+    PLAYER_START_POSITION.z
+);
+controls.lookAt(new THREE.Vector3(0, camera.position.y - 0.1, 0));
 
 // ──────────────────────────────────────────────
 // RESIZE
@@ -80,7 +123,8 @@ function animate(currentTime) {
     if (elapsed < FRAME_INTERVAL) return;
     lastFrameTime = currentTime - (elapsed % FRAME_INTERVAL);
 
-    controls.update();
+    const delta = Math.min(elapsed / 1000, 0.05);
+    controls.update(delta);
     updateGameAnimations();
     renderer.render(scene, camera);
 }
@@ -92,5 +136,9 @@ export function startScene() {
     if (started) return;
     started = true;
     initGame();
+    settingsMenu.show();
+    audioManager.playAmbientMusic({ fade: true }).catch((error) => {
+        console.warn('Demarrage audio reporte au prochain geste utilisateur.', error);
+    });
     requestAnimationFrame(animate);
 }
