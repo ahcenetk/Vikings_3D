@@ -177,7 +177,13 @@ export function initGame() {
 
     window.addEventListener('click', tryInteract);
 
+    // --- SECTION CORRIGÉE POUR LA SAISIE DE TEXTE ---
     window.addEventListener('keydown', (event) => {
+        // Empêcher l'interaction si l'utilisateur écrit dans un champ de texte
+        if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') {
+            return; 
+        }
+
         if (event.repeat) return;
         if (settingsStore.getState().isSettingsOpen) return;
         if (settingsStore.getActionForCode(event.code) !== ACTIONS.INTERACT) return;
