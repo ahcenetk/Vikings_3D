@@ -1,8 +1,17 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import GUI from 'lil-gui';
+import { CollisionSystem } from './src/collision/CollisionSystem.js';
+import { PlayerController } from './src/controls/PlayerController.js';
+import { settingsStore } from './src/ui/settingsStore.js';
+import {
+    CAMERA_EYE_HEIGHT,
+    ENABLE_FLY_MODE,
+    FLY_SPEED,
+    MOVE_SPEED,
+    PLAYER_HEIGHT,
+    PLAYER_RADIUS
+} from './src/config/playerSettings.js';
 
 export const scene = new THREE.Scene();
 
@@ -19,8 +28,34 @@ loader.setDRACOLoader(dracoLoader);
 
 // TextureLoader partagé (fond, etc.) — également suivi par le manager
 export const textureLoader = new THREE.TextureLoader(loadingManager);
+const initialSettings = settingsStore.getState();
 
-export const gui = new GUI();
+function createHiddenGuiStub() {
+    const controller = {
+        name() { return this; },
+        onChange() { return this; },
+        listen() { return this; },
+        min() { return this; },
+        max() { return this; },
+        step() { return this; }
+    };
+
+    const folder = {
+        add() { return controller; },
+        addColor() { return controller; },
+        addFolder() { return folder; },
+        close() { return folder; },
+        open() { return folder; },
+        hide() { return folder; },
+        destroy() {}
+    };
+
+    return folder;
+}
+
+// Compatibilite avec les anciens modules d'objets qui importent encore `gui`.
+// Aucun panneau dat.GUI n'est cree ni affiche.
+export const gui = createHiddenGuiStub();
 
 // ──────────────────────────────────────────────
 // Caméra
@@ -43,16 +78,24 @@ renderer.outputColorSpace = THREE.SRGBColorSpace;
 renderer.shadowMap.enabled = false; // pas d'ombres → moins de calculs par frame
 
 // ──────────────────────────────────────────────
-// OrbitControls
+// PlayerController FPS
 // ──────────────────────────────────────────────
-export const controls = new OrbitControls(camera, renderer.domElement);
+export const collisionSystem = new CollisionSystem({
+    scene,
+    player: {
+        radius: PLAYER_RADIUS,
+        height: initialSettings.playerHeight ?? PLAYER_HEIGHT,
+        eyeHeight: initialSettings.cameraHeight ?? CAMERA_EYE_HEIGHT,
+        skinWidth: 0.025
+    }
+});
 
-controls.enablePan = false;
-controls.minDistance = 2;
-controls.maxDistance = 15;
-controls.minPolarAngle = Math.PI / 6;
-controls.maxPolarAngle = Math.PI / 1.8;
-controls.minAzimuthAngle = -Math.PI / 2;
-controls.maxAzimuthAngle = Math.PI / 2;
+export const controls = new PlayerController(camera, renderer.domElement, collisionSystem, {
+    moveSpeed: initialSettings.moveSpeed ?? MOVE_SPEED,
+    flySpeed: FLY_SPEED,
+    flyMode: initialSettings.flyMode ?? ENABLE_FLY_MODE,
+    pointerSpeed: 0.85,
+    gravityEnabled: false
+});
 
-controls.update();
+export const playerController = controls;
